@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uykVQeSTP5Y=",
+  "dgSpecHash": "WaMhXmorUvU=",
   "success": true,
-  "projectFilePath": "D:\\DU AN WEB JEACT\\Qltb-Backen\\WebApi.csproj",
+  "projectFilePath": "D:\\DU AN REACT ANTD\\react-backen-admin\\WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
@@ -100,21 +100,25 @@
     {
       "code": "NU1701",
       "level": "Warning",
-      "warningLevel": 1,
       "message": "Package 'NWebsec 6.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0-windows7.0'. This package may not be fully compatible with your project.",
+      "projectPath": "D:\\DU AN REACT ANTD\\react-backen-admin\\WebApi.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\DU AN REACT ANTD\\react-backen-admin\\WebApi.csproj",
       "libraryId": "NWebsec",
       "targetGraphs": [
-        "net7.0-windows7.0"
+        "net7.0-Windows"
       ]
     },
     {
       "code": "NU1701",
       "level": "Warning",
-      "warningLevel": 1,
       "message": "Package 'NWebsec.Core 3.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0-windows7.0'. This package may not be fully compatible with your project.",
+      "projectPath": "D:\\DU AN REACT ANTD\\react-backen-admin\\WebApi.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\DU AN REACT ANTD\\react-backen-admin\\WebApi.csproj",
       "libraryId": "NWebsec.Core",
       "targetGraphs": [
-        "net7.0-windows7.0"
+        "net7.0-Windows"
       ]
     }
   ]

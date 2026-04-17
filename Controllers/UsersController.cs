@@ -20,16 +20,31 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate([FromBody] LoginRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _userService.Authencate(request);
-
-            if (string.IsNullOrEmpty(result.ResultObj))
+            try
             {
-                return BadRequest(result);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var result = await _userService.Authencate(request);
+
+                if (result == null)
+                    return BadRequest("Result is null");
+
+                if (string.IsNullOrEmpty(result.ResultObj))
+                    return BadRequest(result);
+
+                return Ok(result);
             }
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); // 👈 show lỗi thật
+            }
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            return Ok();
         }
 
         [HttpPost]
@@ -101,6 +116,8 @@ namespace WebApi.Controllers
             var result = await _userService.GetUser();
             return Ok(result);
         }
+
+        
         [HttpPost("DeleteMultipale")]
 
         public async Task<IActionResult> DeleteMultiple([FromBody] List<AppUser> response)

@@ -124,6 +124,7 @@ builder.Services.AddTransient<ICapnhatgiacotService, CapnhatgiacotService>();
 builder.Services.AddTransient<ITonghopbienapService, TonghopbienapService>();
 builder.Services.AddTransient<ITonghopKhoanBalangService, TonghopKhoanBalangService>();
 builder.Services.AddTransient<ITonghopaptomatkhoidongtuService, TonghopaptomatkhoidongtuService>();
+builder.Services.AddTransient<IThietBiService, ThietBiService>();
 
 builder.Services.Configure<FormOptions>(o =>
 {
@@ -190,7 +191,7 @@ app.UseDirectoryBrowser(new DirectoryBrowserOptions()
 });
 
 app.UseRouting();
-app.UseCors(options => options.WithOrigins("http://localhost:5005").AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+app.UseCors(options => options.WithOrigins("http://localhost:5005", "http://localhost:3333", "http://localhost:3334", "http://192.168.0.110:5005").AllowAnyHeader().AllowAnyMethod());
 app.UseAuthentication();
 app.UseAuthorization();
 if (app.Environment.IsDevelopment())

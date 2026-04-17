@@ -28,21 +28,40 @@ namespace WebApi.Controllers
             return Ok(phongban);
 
         }
-        //[HttpPost]
-        //public async Task<ActionResult> CreatePhongban(PhongbanCreateRequest request)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-        //    var phongban = await _phongbanService.CreatePhongban(request);
-        //    return Ok(phongban);
-        //}
-        [HttpPost("delete")]
-        public async Task<IActionResult> DeletePhongban(PhongbanVm phongban)
+
+        [HttpPost]
+        public async Task<ActionResult> CreatePhongban(PhongbanCreateRequest request)
         {
-            var Result = await _phongbanService.Delete(phongban);
-            if (Result == 0)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var phongban = await _phongbanService.CreatePhongban(request);
+            return Ok(phongban);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdatePhongban(PhongbanVm phongban)
+        {
+            var phongBanEntity = new PhongBan
+            {
+                Id = phongban.Id,
+                TenPhong = phongban.TenPhong,
+                TrangThai = phongban.TrangThai
+            };
+            var Result = await _phongbanService.Update(phongBanEntity);
+            if (!Result)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePhongban(int id)
+        {
+            var result = await _phongbanService.Delete(id);
+            if (!result)
             {
                 return BadRequest(ModelState);
             }
@@ -73,39 +92,6 @@ namespace WebApi.Controllers
 
         }
 
-
-        [HttpPost("Add")]
-        public async Task<ActionResult> Add([FromBody] PhongBan request)
-        {
-            if (request == null)
-            {
-                return BadRequest();
-            }
-            await _phongbanService.Add(request);
-            return Ok();
-        }
-
-        [HttpPut("Update")]
-        public async Task<ActionResult> Update([FromBody] PhongBan request)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-            await _phongbanService.Update(request);
-            return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            if (id == 0)
-            {
-                return BadRequest();
-            }
-            await _phongbanService.Delete(id);
-            return Ok();
-        }
         [HttpPost("DeleteSelect")]
 
         public async Task<IActionResult> DeleteMultiple([FromBody] List<int> ids)

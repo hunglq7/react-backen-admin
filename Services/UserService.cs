@@ -44,7 +44,7 @@ namespace WebApi.Services
            RoleManager<AppRole> roleManager,
             ThietbiDbContext dbContext,
            IConfiguration config)
-       
+
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -65,6 +65,8 @@ namespace WebApi.Services
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim("mail",user.Email!),
                 new Claim("name",user.FirstName!),
                 new Claim("role", string.Join(",",roles)),
@@ -169,7 +171,7 @@ namespace WebApi.Services
                 PhoneNumber = x.PhoneNumber,
 
             }).ToListAsync();
-           
+
         }
 
         public async Task<ApiResult<bool>> Register(RegisterRequest request)
@@ -179,16 +181,16 @@ namespace WebApi.Services
             {
                 return new ApiErrorResult<bool>("Email đã tồn tại");
             }
-           
+
 
             user = new AppUser()
             {
-               
+
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 UserName = request.UserName,
-                FullName= request.FirstName + " " + request.LastName,
+                FullName = request.FirstName + " " + request.LastName,
                 PhoneNumber = request.PhoneNumber,
             };
             var result = await _userManager.CreateAsync(user, request.Password!);
