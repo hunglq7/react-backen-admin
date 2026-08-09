@@ -195,7 +195,7 @@ app.UseDirectoryBrowser(new DirectoryBrowserOptions()
 });
 
 app.UseRouting();
-app.UseCors(options => options.WithOrigins("http://localhost:5005", "http://localhost:3333", "http://localhost:3334", "http://192.168.10.8:5005", "http://192.168.0.100:3333").AllowAnyHeader().AllowAnyMethod());
+app.UseCors(options => options.WithOrigins("http://localhost:5005", "http://localhost:3333", "http://localhost:3334", "http://192.168.10.8:5005", "http://192.168.0.106:3333").AllowAnyHeader().AllowAnyMethod());
 app.UseAuthentication();
 app.UseAuthorization();
 if (app.Environment.IsDevelopment())
