@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -29,7 +30,10 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.WriteIndented = true;
 });
 builder.Services.AddDbContext<ThietbiDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("ThietbiDb")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("ThietbiDb"), sqlServerOptionsAction =>
+{
+    sqlServerOptionsAction.EnableRetryOnFailure();
+}));
 builder.Services.AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<ThietbiDbContext>()
                 .AddDefaultTokenProviders();
@@ -191,7 +195,7 @@ app.UseDirectoryBrowser(new DirectoryBrowserOptions()
 });
 
 app.UseRouting();
-app.UseCors(options => options.WithOrigins("http://localhost:5005", "http://localhost:3333", "http://localhost:3334", "http://192.168.0.110:5005").AllowAnyHeader().AllowAnyMethod());
+app.UseCors(options => options.WithOrigins("http://localhost:5005", "http://localhost:3333", "http://localhost:3334", "http://192.168.10.8:5005", "http://192.168.0.100:3333").AllowAnyHeader().AllowAnyMethod());
 app.UseAuthentication();
 app.UseAuthorization();
 if (app.Environment.IsDevelopment())

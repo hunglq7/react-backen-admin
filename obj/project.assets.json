@@ -4502,11 +4502,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DU AN REACT ANTD\\react-backen-admin\\WebApi.csproj",
+      "projectUniqueName": "E:\\DU AN REACT ANTD\\react-backen-admin\\WebApi.csproj",
       "projectName": "WebApi",
-      "projectPath": "D:\\DU AN REACT ANTD\\react-backen-admin\\WebApi.csproj",
+      "projectPath": "E:\\DU AN REACT ANTD\\react-backen-admin\\WebApi.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\DU AN REACT ANTD\\react-backen-admin\\obj\\",
+      "outputPath": "E:\\DU AN REACT ANTD\\react-backen-admin\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
