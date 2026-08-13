@@ -10,7 +10,7 @@ namespace WebApi.Services
     public interface IChucvuService {
         Task<List<ChucvuVm>> GetChucvu();
         Task<ApiResult<int>> UpdateMultipleChucvu(List<ChucVu> chucvus);
-        Task<ApiResult<int>> DeleteMutipleChucvu(List<ChucVu> chucvus);
+        Task<ApiResult<int>> DeleteMutipleChucvu(List<int> ids);
         Task<bool> Add([FromBody] ChucVu Request);
         Task<bool> Update([FromBody] ChucVu Request);
         Task<bool> Delete(int id);
@@ -25,28 +25,27 @@ namespace WebApi.Services
             _thietbiDbContext = thietbiDbContext;
         }
 
-        public async Task<ApiResult<int>> DeleteMutipleChucvu(List<ChucVu> chucvus)
+        public async Task<ApiResult<int>> DeleteMutipleChucvu(List<int> ids)
         {
-            var ids = chucvus.Select(x => x.Id).ToList();
-            if (ids.Count() == 0)
+           if (ids == null || ids.Count == 0)
             {
-                return new ApiErrorResult<int>("Không timg thấy bản ghi nào");
-
+                return new ApiErrorResult<int>("Danh sách ID rỗng");
             }
 
-            var exitChucvu = _thietbiDbContext.ChucVus.AsNoTracking().Where(x => ids.Contains(x.Id)).ToList();
-           
-            var newchucvus = exitChucvu.Select(x => x.Id).ToList();
-            var deff = ids.Except(newchucvus).ToList();
-            if (deff.Count > 0)
+            var items = await _thietbiDbContext.ChucVus.AsNoTracking()
+                .Where(x => ids.Contains(x.Id))
+                .ToListAsync();
+
+            if (items.Count != ids.Count)
             {
-                return new ApiErrorResult<int>("Xóa dữ liệu không hợp lệ");
+                return new ApiErrorResult<int>("Một số bản ghi không tồn tại");
             }
-            _thietbiDbContext.RemoveRange(exitChucvu);
+
+            _thietbiDbContext.ChucVus.RemoveRange(items);
             var count = await _thietbiDbContext.SaveChangesAsync();
+
             return new ApiSuccessResult<int>(count);
         }
-
         public async Task<List<ChucvuVm>> GetChucvu()
         {
             var query = from c in _thietbiDbContext.ChucVus.Where(x => x.TrangThai == true)

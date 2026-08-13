@@ -693,7 +693,6 @@ E:\DU AN REACT ANTD\react-backen-admin\bin\Debug\net7.0-windows\runtimes\win\lib
 E:\DU AN REACT ANTD\react-backen-admin\bin\Debug\net7.0-windows\runtimes\win\lib\net7.0\System.Text.Encoding.CodePages.dll
 E:\DU AN REACT ANTD\react-backen-admin\bin\Debug\net7.0-windows\runtimes\browser\lib\net7.0\System.Text.Encodings.Web.dll
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.csproj.AssemblyReference.cache
-E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\rpswa.dswa.cache.json
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.GeneratedMSBuildEditorConfig.editorconfig
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.AssemblyInfoInputs.cache
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.AssemblyInfo.cs
@@ -701,15 +700,10 @@ E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.csproj.Co
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.MvcApplicationPartsAssemblyInfo.cs
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.MvcApplicationPartsAssemblyInfo.cache
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.sourcelink.json
-E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\rjimswa.dswa.cache.json
-E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\rjsmrazor.dswa.cache.json
-E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\rjsmcshtml.dswa.cache.json
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\scopedcss\bundle\WebApi.styles.css
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets.build.json
-E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets.build.json.cache
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets.development.json
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets.build.endpoints.json
-E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\swae.build.ex.cache
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.csproj.Up2Date
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.dll
 E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\refint\WebApi.dll
@@ -831,3 +825,10 @@ D:\REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\refint\WebApi.dll
 D:\REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.pdb
 D:\REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\WebApi.genruntimeconfig.cache
 D:\REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\ref\WebApi.dll
+E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets\msbuild.WebApi.Microsoft.AspNetCore.StaticWebAssets.props
+E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets\msbuild.WebApi.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
+E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets\msbuild.build.WebApi.props
+E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets\msbuild.buildMultiTargeting.WebApi.props
+E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets\msbuild.buildTransitive.WebApi.props
+E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets.pack.json
+E:\DU AN REACT ANTD\react-backen-admin\obj\Debug\net7.0-windows\staticwebassets.upToDateCheck.txt

@@ -43,9 +43,9 @@ namespace WebApi.Controllers
         }
         [HttpPost("DeleteMultipale")]
 
-        public async Task<ActionResult> DeleteMultiple([FromBody] List<ChucVu> chucvus)
+        public async Task<ActionResult> DeleteMultiple([FromBody] List<int> ids)
         {
-            var chucvu = await _chucvuService.DeleteMutipleChucvu(chucvus);
+            var chucvu = await _chucvuService.DeleteMutipleChucvu(ids);
             if( chucvu.Count==0)
             {
                 return BadRequest("Xóa bản ghi thất bại");
