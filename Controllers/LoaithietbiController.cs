@@ -44,5 +44,50 @@ namespace WebApi.Controllers
             return Ok(loathietbis.Count);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] LoaiThietBi request)
+        {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+            await _loaithietbiService.Add(request);
+            return Ok();
+        }
+
+         [HttpPut("update")]
+        public async Task<ActionResult> Update([FromBody] LoaiThietBi request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            await _loaithietbiService.Update(request);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            await _loaithietbiService.Delete(id);
+            return Ok();
+        }
+
+         [HttpPost("DeleteSelected")]
+
+        public async Task<ActionResult> DeleteMultiple([FromBody] List<int> ids)
+        {
+            var loaithietbi = await _loaithietbiService.DeleteSelectedLoaithietbi(ids);
+            if( loaithietbi.Count==0)
+            {
+                return BadRequest("Xóa bản ghi thất bại");
+            }
+            return Ok(loaithietbi.Count);
+        }
+
     }
 }
