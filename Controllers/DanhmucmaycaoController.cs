@@ -67,8 +67,8 @@ namespace WebApi.Controllers
             await _danhmucMayCaoService.Update(request);
             return Ok();
         }
-        [HttpDelete("DatailById/{Id}")]
-        public async Task<ActionResult> GetDetailById(int Id)
+        [HttpDelete("{Id}")]
+        public async Task<ActionResult> DeleteById(int Id)
         {
             var items = await _danhmucMayCaoService.Delete(Id);
             return Ok(items);
