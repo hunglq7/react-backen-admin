@@ -18,7 +18,7 @@ namespace WebApi.Controllers
             _tonghopmaycaoService = tonghopmaycaoService;
         }
 
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<ActionResult> Add([FromBody] TongHopMayCao request)
         {
             if (request == null)

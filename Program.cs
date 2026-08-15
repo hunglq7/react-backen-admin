@@ -195,7 +195,7 @@ app.UseDirectoryBrowser(new DirectoryBrowserOptions()
 });
 
 app.UseRouting();
-app.UseCors(options => options.WithOrigins("http://192.168.1.131:3000", "http://192.168.1.131:3333", "http://172.16.18.37:3333").AllowAnyHeader().AllowAnyMethod());
+app.UseCors(options => options.WithOrigins("http://192.168.1.131:3000", "http://192.168.8.62:3333", "http://172.16.18.216:3333").AllowAnyHeader().AllowAnyMethod());
 app.UseAuthentication();
 app.UseAuthorization();
 if (app.Environment.IsDevelopment())
