@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\REACT ANTD\\react-backen-admin\\WebApi.csproj": {}
+    "D:\\DU AN REACT ANTD\\Nodejs-SqlServer-React\\react-backen-admin\\WebApi.csproj": {}
   },
   "projects": {
-    "D:\\REACT ANTD\\react-backen-admin\\WebApi.csproj": {
+    "D:\\DU AN REACT ANTD\\Nodejs-SqlServer-React\\react-backen-admin\\WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\REACT ANTD\\react-backen-admin\\WebApi.csproj",
+        "projectUniqueName": "D:\\DU AN REACT ANTD\\Nodejs-SqlServer-React\\react-backen-admin\\WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "D:\\REACT ANTD\\react-backen-admin\\WebApi.csproj",
-        "packagesPath": "C:\\Users\\hungl\\.nuget\\packages\\",
-        "outputPath": "D:\\REACT ANTD\\react-backen-admin\\obj\\",
+        "projectPath": "D:\\DU AN REACT ANTD\\Nodejs-SqlServer-React\\react-backen-admin\\WebApi.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\DU AN REACT ANTD\\Nodejs-SqlServer-React\\react-backen-admin\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\hungl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -29,7 +29,8 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0-windows7.0": {
+          "net7.0-Windows": {
+            "framework": "net7.0-windows7.0",
             "targetAlias": "net7.0-Windows",
             "projectReferences": {}
           }
@@ -44,10 +45,11 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "10.0.300"
       },
       "frameworks": {
-        "net7.0-windows7.0": {
+        "net7.0-Windows": {
+          "framework": "net7.0-windows7.0",
           "targetAlias": "net7.0-Windows",
           "dependencies": {
             "EPPlus": {
@@ -114,7 +116,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
