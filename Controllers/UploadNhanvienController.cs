@@ -19,9 +19,10 @@ namespace WebApi.Controllers
                 var file = formCollection.Files.First();
                 var folderName = Path.Combine("wwwroot", "Images", "NhanVien");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                Directory.CreateDirectory(pathToSave);
                 if (file.Length > 0)
                 {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fileName = Path.GetFileName(ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"'));
                     var fullPath = Path.Combine(pathToSave, fileName);
                     //var dbPath = Path.Combine(folderName, fileName);
                     var dbPath = "/Images/NhanVien/" + fileName;
@@ -38,7 +39,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"L?i máy ch? n?i b?: {ex}");
+                return StatusCode(500, $"L?i mï¿½y ch? n?i b?: {ex}");
             }
         }
         [HttpPost("Multiple"), DisableRequestSizeLimit]
@@ -70,11 +71,11 @@ namespace WebApi.Controllers
                     }
                 }
 
-                return Ok("T?t c? các t?p tin du?c t?i lên thành công.");
+                return Ok("T?t c? cï¿½c t?p tin du?c t?i lï¿½n thï¿½nh cï¿½ng.");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"L?i máy ch? n?i b?: {ex}");
+                return StatusCode(500, $"L?i mï¿½y ch? n?i b?: {ex}");
             }
         }
     }

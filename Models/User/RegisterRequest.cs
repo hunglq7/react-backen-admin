@@ -32,5 +32,7 @@ namespace WebApi.Models.User
         [Display(Name = "Xác nhận mật khẩu")]
         [DataType(DataType.Password)]
         public string? ConfirmPassword { get; set; }
+        [Display(Name = "Ảnh đại diện")]
+        public string? Avatar { get; set; }
     }
 }

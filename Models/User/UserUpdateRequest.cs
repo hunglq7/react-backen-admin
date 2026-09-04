@@ -21,5 +21,8 @@ namespace WebApi.Models.User
 
         [Display(Name = "Số điện thoại")]
         public string? PhoneNumber { get; set; }
+
+        [Display(Name = "Ảnh đại diện")]
+        public string? Avatar { get; set; }
     }
 }

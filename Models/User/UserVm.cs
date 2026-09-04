@@ -21,6 +21,9 @@ namespace WebApi.Models.User
         [Display(Name = "Email")]
         public string? Email { get; set; }
 
+        [Display(Name = "Ảnh đại diện")]
+        public string? Avatar { get; set; }
+
         [Display(Name = "Ngày sinh")]
         public DateTime Dob { get; set; }
 

@@ -116,6 +116,7 @@ namespace WebApi.Services
                 Id = user.Id,
                 LastName = user.LastName,
                 UserName = user.UserName,
+                Avatar = user.Avatar,
                 Roles = roles
             };
             return new ApiSuccessResult<UserVm>(userVm);
@@ -142,7 +143,8 @@ namespace WebApi.Services
                     UserName = x.UserName,
                     FirstName = x.FirstName,
                     Id = x.Id,
-                    LastName = x.LastName
+                    LastName = x.LastName,
+                    Avatar = x.Avatar
                 }).ToListAsync();
 
             //4. Select and projection
@@ -169,6 +171,7 @@ namespace WebApi.Services
                 Dob = x.Dob,
                 Email = x.Email,
                 PhoneNumber = x.PhoneNumber,
+                Avatar = x.Avatar
 
             }).ToListAsync();
 
@@ -192,6 +195,7 @@ namespace WebApi.Services
                 UserName = request.UserName,
                 FullName = request.FirstName + " " + request.LastName,
                 PhoneNumber = request.PhoneNumber,
+                Avatar = request.Avatar
             };
             var result = await _userManager.CreateAsync(user, request.Password!);
             if (result.Succeeded)
@@ -242,7 +246,7 @@ namespace WebApi.Services
             user.FirstName = request.FirstName;
             user.LastName = request.LastName;
             user.PhoneNumber = request.PhoneNumber;
-
+            user.Avatar = request.Avatar;
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
