@@ -48,14 +48,15 @@ namespace WebApi.Controllers
             var query = await _danhmucbomnuocService.DeleteMutiple(reponse);
             if (query.Count == 0)
             {
-                return NotFound("Không xóa du?c b?n ghi nào");
+                return NotFound("Khï¿½ng xï¿½a du?c b?n ghi nï¿½o");
             }
             return Ok(query.Count);
 
         }
 
         [HttpPost("UploadExcelFile")]
-        public async Task<IActionResult> UploadExcelFile([FromForm] IFormFile file)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadExcelFile(IFormFile file)
         {
             try
             {
@@ -103,13 +104,13 @@ namespace WebApi.Controllers
                     }
 
                 }
-                return Ok("Thêm b?n ghi thành công");
+                return Ok("Thï¿½m b?n ghi thï¿½nh cï¿½ng");
             }
             catch (Exception ex)
             {
                 StatusCode(5000, ex.Message);
             }
-            return BadRequest("Thêm th?t b?i");
+            return BadRequest("Thï¿½m th?t b?i");
         }
         [HttpPost("Add")]
         public async Task<ActionResult> Add([FromBody] DanhmucBomnuoc request)
@@ -151,7 +152,7 @@ namespace WebApi.Controllers
             var query = await _danhmucbomnuocService.DeleteMuny(ids);
             if (query.Count == 0)
             {
-                return NotFound("Không xóa du?c b?n ghi nào");
+                return NotFound("Khï¿½ng xï¿½a du?c b?n ghi nï¿½o");
             }
             return Ok(query.Count);
 

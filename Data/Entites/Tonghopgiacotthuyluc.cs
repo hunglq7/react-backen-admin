@@ -1,4 +1,3 @@
-using Microsoft.OpenApi.Expressions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,7 +14,7 @@ namespace WebApi.Data.Entites
         public string? ViTriLapDat { get; set; }
         public DateTime NgayLap { get; set; }
         public int SoLuong { get; set; }
-        public Boolean  duPhong { get; set; }
+        public Boolean duPhong { get; set; }
         public string? GhiChu { get; set; }
         [ForeignKey("ThietBiId")]
         public virtual Danhmucgiacotthuyluc? Danhmucgiacotthuyluc { get; set; }

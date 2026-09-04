@@ -117,7 +117,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-        
+
         [HttpPost("DeleteMultipale")]
 
         public async Task<IActionResult> DeleteMultiple([FromBody] List<AppUser> response)

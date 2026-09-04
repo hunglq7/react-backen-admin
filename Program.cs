@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -62,7 +62,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddDataProtection()
         .PersistKeysToFileSystem(new DirectoryInfo(@"C:\keys\"));
-        //gọi service trong thư mục Extension/DependencyInjection.cs
+//gọi service trong thư mục Extension/DependencyInjection.cs
 builder.Services.AddApplicationServices();
 builder.Services.Configure<FormOptions>(o =>
 {
@@ -86,20 +86,10 @@ builder.Services.AddSwaggerGen(c =>
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    c.AddSecurityRequirement(document => new OpenApiSecurityRequirement()
                   {
                     {
-                      new OpenApiSecurityScheme
-                      {
-                        Reference = new OpenApiReference
-                          {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                          },
-                          Scheme = "oauth2",
-                          Name = "Bearer",
-                          In = ParameterLocation.Header,
-                        },
+                                            new OpenApiSecuritySchemeReference("Bearer", document, null),
                         new List<string>()
                       }
                     });
@@ -129,7 +119,7 @@ app.UseDirectoryBrowser(new DirectoryBrowserOptions()
 });
 
 app.UseRouting();
-app.UseCors(options => options.WithOrigins("http://192.168.10.8:3333").AllowAnyHeader().AllowAnyMethod());
+app.UseCors(options => options.WithOrigins("http://192.168.0.109:3335").AllowAnyHeader().AllowAnyMethod());
 app.UseAuthentication();
 app.UseAuthorization();
 if (app.Environment.IsDevelopment())

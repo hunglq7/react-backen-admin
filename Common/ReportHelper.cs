@@ -21,11 +21,7 @@ namespace WebApi.Common
 
         public static Task GenerateXls<T>(List<T> datasource, string filePath)
         {
-            ExcelPackage.LicenseContext = LicenseContext.Commercial;
-
-            // If you use EPPlus in a noncommercial context
-            // according to the Polyform Noncommercial license:
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            ExcelPackage.License.SetNonCommercialPersonal("QLTB");
             return Task.Run(() =>
 
             {

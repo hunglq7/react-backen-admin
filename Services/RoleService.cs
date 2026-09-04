@@ -30,13 +30,13 @@ namespace WebApi.Services
 
         public async Task<bool> Create([FromBody] AppRole role)
         {
-           if(role == null)
+            if (role == null)
             {
                 return false;
             }
             var newRole = (new AppRole()
             {
-                Id = new Guid(),
+                Id = Guid.NewGuid(),
                 Name = role.Name,
                 NormalizedName = role.NormalizedName,
                 Description = role.Description,
@@ -54,7 +54,7 @@ namespace WebApi.Services
 
             }
             var exitRole = _dbContext.Roles.AsNoTracking().Where(x => ids.Contains(x.Id)).ToList();
-            
+
             var newRole = exitRole.Select(x => x.Id).ToList();
             var deff = ids.Except(newRole).ToList();
             if (deff.Count > 0)
@@ -95,7 +95,7 @@ namespace WebApi.Services
             _dbContext.UpdateRange(response);
             var Count = await _dbContext.SaveChangesAsync();
             var UpdateMuliple = _dbContext.Roles.Where(x => ids.Contains(x.Id)).ToList();
-          
+
             return new ApiSuccessResult<int>(Count);
         }
     }
