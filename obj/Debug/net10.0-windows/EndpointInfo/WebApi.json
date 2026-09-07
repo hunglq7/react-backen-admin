@@ -10886,6 +10886,43 @@
         }
       }
     },
+    "/api/Tonghopmayxuc/queryParametetsPage": {
+      "get": {
+        "tags": [
+          "Tonghopmayxuc"
+        ],
+        "parameters": [
+          {
+            "name": "Keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PageIndex",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Tonghopneo/paging": {
       "get": {
         "tags": [

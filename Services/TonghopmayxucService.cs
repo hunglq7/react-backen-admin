@@ -21,6 +21,7 @@ namespace WebApi.Services
         Task<bool> DeleteTonghopmayxuc(int id);
         Task<PagedResult<TonghopmayxucVM>> GetAllPaging(GetManagerTonghopMayxucPagingRequest request);
         Task<PagedResult<TonghopmayxucVM>> SearchAsync(SearchTongHopRequest request);
+        Task<PagedResult<TonghopmayxucVM>> QueryAsync(QueryParametersPage request);
         Task<List<int>> DeleteMutiple(List<int> ids);
 
     }
@@ -318,6 +319,58 @@ namespace WebApi.Services
                 var denNgay = request.DenNgay.Value.Date.AddDays(1).AddTicks(-1);
                 query = query.Where(x => x.NgayLap <= denNgay);
             }
+            var totalRecords = await query.CountAsync();
+            var items = await query
+        .OrderByDescending(x => x.NgayLap)
+        .Skip((request.PageIndex - 1) * request.PageSize)
+        .Take(request.PageSize)
+         .Select(x => new TonghopmayxucVM()
+
+
+         {
+             Id = x.Id,
+             MaQuanLy = x.MaQuanLy,
+             TenMayXuc = x.MayXuc!.TenThietBi,
+             MayxucId = x.MayXucId,
+             TenPhongBan = x.PhongBan!.TenPhong,
+             PhongBanId = x.PhongBanId,
+             LoaiThietBi = x.LoaiThietBi!.TenLoai,
+             LoaiThietBiId = x.LoaiThietBiId,
+             ViTriLapDat = x.ViTriLapDat,
+             NgayLap = x.NgayLap,
+             TinhTrang = x.TinhTrang,
+             SoLuong = x.SoLuong,
+             DuPhong = x.DuPhong,
+             GhiChu = x.GhiChu
+
+         })
+        .ToListAsync();
+            return new PagedResult<TonghopmayxucVM>
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                TotalRecords = totalRecords,
+                Items = items
+            };
+        }
+
+        public async Task<PagedResult<TonghopmayxucVM>> QueryAsync(QueryParametersPage request)
+        {
+            var query = from t in _thietbiDbContext.TongHopMayXucs.Include(x => x.MayXuc).Include(x => x.PhongBan).Include(x => x.LoaiThietBi)
+                        select t;
+
+            if (!string.IsNullOrWhiteSpace(request.Keyword))
+            {
+                query = query.Where(x =>
+                    x.MayXuc!.TenThietBi!.ToLower().Contains(request.Keyword.ToLower()) ||                  
+                    x.ViTriLapDat!.ToLower().Contains(request.Keyword.ToLower())||
+                    x.MaQuanLy!.ToLower().Contains(request.Keyword.ToLower()) ||
+                    x.PhongBan!.TenPhong!.ToLower().Contains(request.Keyword.ToLower())
+                    );
+
+            }
+            // ✅ Lọc theo trạng thái true / false
+          
             var totalRecords = await query.CountAsync();
             var items = await query
         .OrderByDescending(x => x.NgayLap)

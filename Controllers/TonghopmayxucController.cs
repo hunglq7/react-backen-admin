@@ -111,6 +111,12 @@ namespace WebApi.Controllers
             var result = await _tonghopmayxucService.SearchAsync(request);
             return Ok(result);
         }
+        [HttpGet("queryParametetsPage")]
+        public async Task<IActionResult> QueryParametersPage([FromQuery] QueryParametersPage request)
+        {
+            var result = await _tonghopmayxucService.QueryAsync(request);
+            return Ok(result);
+        }
 
     }
 }

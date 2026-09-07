@@ -178,3 +178,4 @@ E:\DU AN REACT ANTD\Notjs-React-Sqlserver-QLTB\react-backen-admin\obj\Debug\net1
 E:\DU AN REACT ANTD\Notjs-React-Sqlserver-QLTB\react-backen-admin\obj\Debug\net10.0-windows\WebApi.pdb
 E:\DU AN REACT ANTD\Notjs-React-Sqlserver-QLTB\react-backen-admin\obj\Debug\net10.0-windows\WebApi.genruntimeconfig.cache
 E:\DU AN REACT ANTD\Notjs-React-Sqlserver-QLTB\react-backen-admin\obj\Debug\net10.0-windows\ref\WebApi.dll
+E:\DU AN REACT ANTD\Notjs-React-Sqlserver-QLTB\react-backen-admin\obj\Debug\net10.0-windows\staticwebassets.upToDateCheck.txt
