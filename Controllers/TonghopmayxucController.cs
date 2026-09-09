@@ -91,6 +91,14 @@ namespace WebApi.Controllers
 
         }
 
+         [HttpGet("QueryParametersPaging")]
+        public async Task<IActionResult> QueryParametersPaging([FromQuery] QueryParameters request)
+        {
+            var query = await _tonghopmayxucService.GetQueryParametersPaging(request);
+            return Ok(query);
+
+        }
+
 
         [HttpPost("DeleteMultiple")]
         public async Task<IActionResult> DeleteMultiple([FromBody] List<int> ids)

@@ -5,7 +5,7 @@ using WebApi.Data.EF;
 using WebApi.Data.Entites;
 using WebApi.Models.Common;
 using WebApi.Models.Tonghopmayxuc;
-using WebApi.Models.Tonghoptoitruc;
+
 
 
 namespace WebApi.Services
@@ -20,11 +20,27 @@ namespace WebApi.Services
         Task<bool> UpdateTonghopmayxuc([FromBody] MayxucUpdateRequest Request);
         Task<bool> DeleteTonghopmayxuc(int id);
         Task<PagedResult<TonghopmayxucVM>> GetAllPaging(GetManagerTonghopMayxucPagingRequest request);
+        Task<PagedResult<TonghopmayxucVM>> GetQueryParametersPaging(QueryParameters request);
         Task<PagedResult<TonghopmayxucVM>> SearchAsync(SearchTongHopRequest request);
         Task<List<int>> DeleteMutiple(List<int> ids);
 
     }
-    public class TonghopmayxucService : ITonghopmayxucService
+
+    public interface ITonghopmayxucService1
+    {
+        Task<bool> AddTonghopmayxuc([FromBody] MayxucCreateRequest Request);
+        Task<List<int>> DeleteMutiple(List<int> ids);
+        Task<bool> DeleteTonghopmayxuc(int id);
+        Task<PagedResult<TonghopmayxucVM>> GetAllPaging(GetManagerTonghopMayxucPagingRequest request);
+        Task<TongHopMayXuc> GetById(int id);
+        Task<List<TonghopmayDetailByIdVm>> getDatailById(int id);
+        Task<List<TonghopmayxucVM>> GetTonghopmayxuc();
+        Task<PagedResult<TonghopmayxucVM>> SearchAsync(SearchTongHopRequest request);
+        Task<int> SumTonghopmayxuc();
+        Task<bool> UpdateTonghopmayxuc([FromBody] MayxucUpdateRequest Request);
+    }
+
+    public class TonghopmayxucService : ITonghopmayxucService, ITonghopmayxucService1
     {
         private readonly ThietbiDbContext _thietbiDbContext;
         public TonghopmayxucService(ThietbiDbContext thetbiDbContext)
@@ -191,8 +207,11 @@ namespace WebApi.Services
                     Id = x.Id,
                     MaQuanLy = x.MaQuanLy ?? string.Empty,
                     TenMayXuc = x.MayXuc!.TenThietBi,
+                    MayxucId = x.MayXucId,
                     TenPhongBan = x.PhongBan != null ? (x.PhongBan.TenPhong ?? string.Empty) : string.Empty,
+                    PhongBanId = x.PhongBanId,
                     LoaiThietBi = x.LoaiThietBi != null ? (x.LoaiThietBi.TenLoai ?? string.Empty) : string.Empty,
+                    LoaiThietBiId = x.LoaiThietBiId,
                     ViTriLapDat = x.ViTriLapDat ?? string.Empty,
                     NgayLap = x.NgayLap,
                     SoLuong = x.SoLuong,
@@ -295,6 +314,7 @@ namespace WebApi.Services
                     x.MayXuc!.TenThietBi!.Contains(request.Keyword) ||
                     x.GhiChu!.Contains(request.Keyword) ||
                     x.ViTriLapDat!.Contains(request.Keyword) ||
+                    x.LoaiThietBi!.TenLoai!.Contains(request.Keyword) ||
                     x.MaQuanLy!.Contains(request.Keyword) ||
                     x.PhongBan!.TenPhong!.Contains(request.Keyword)
                     );
@@ -351,6 +371,60 @@ namespace WebApi.Services
                 TotalRecords = totalRecords,
                 Items = items
             };
+        }
+
+        public async Task<PagedResult<TonghopmayxucVM>> GetQueryParametersPaging(QueryParameters request)
+        {
+           var query = from t in _thietbiDbContext.TongHopMayXucs
+                        .Include(x => x.MayXuc)
+                        .Include(x => x.PhongBan)
+                        .Include(x => x.LoaiThietBi)
+                        select t;
+
+            // Lọc theo duPhong (nếu có)
+          if(!string.IsNullOrWhiteSpace(request.Keyword))
+            {
+                query = query.Where(x =>
+                    x.MayXuc!.TenThietBi!.ToLower().Contains(request.Keyword.ToLower()) ||                  
+                    x.ViTriLapDat!.ToLower().Contains(request.Keyword.ToLower()) ||
+                    x.LoaiThietBi!.TenLoai!.ToLower().Contains(request.Keyword.ToLower()) ||
+                    x.MaQuanLy!.ToLower().Contains(request.Keyword.ToLower()) ||
+                    x.PhongBan!.TenPhong!.ToLower().Contains(request.Keyword.ToLower())                  
+                    );
+            }
+           
+
+            int totalRow = await query.CountAsync();
+            int sumSoluong = await query.SumAsync(x => x.SoLuong);
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new TonghopmayxucVM()
+                {
+                    Id = x.Id,
+                    MaQuanLy = x.MaQuanLy ?? string.Empty,
+                    TenMayXuc = x.MayXuc!.TenThietBi,
+                    MayxucId = x.MayXucId,
+                    TenPhongBan = x.PhongBan != null ? (x.PhongBan.TenPhong ?? string.Empty) : string.Empty,
+                    PhongBanId = x.PhongBanId,
+                    LoaiThietBi = x.LoaiThietBi != null ? (x.LoaiThietBi.TenLoai ?? string.Empty) : string.Empty,
+                    LoaiThietBiId = x.LoaiThietBiId,
+                    ViTriLapDat = x.ViTriLapDat ?? string.Empty,
+                    NgayLap = x.NgayLap,
+                    SoLuong = x.SoLuong,
+                    TinhTrang = x.TinhTrang ?? string.Empty,
+                    DuPhong = x.DuPhong,
+                    GhiChu = x.GhiChu ?? string.Empty
+
+                }).ToListAsync();
+            var pagedResult = new PagedResult<TonghopmayxucVM>()
+            {
+                SumRecords = sumSoluong,
+                TotalRecords = totalRow,
+                Items = data,
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize
+            };
+            return pagedResult;
         }
     }
 }

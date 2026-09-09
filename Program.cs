@@ -119,7 +119,7 @@ app.UseDirectoryBrowser(new DirectoryBrowserOptions()
 });
 
 app.UseRouting();
-app.UseCors(options => options.WithOrigins("http://192.168.0.109:3333").AllowAnyHeader().AllowAnyMethod());
+app.UseCors(options => options.WithOrigins("http://192.168.10.8:3333").AllowAnyHeader().AllowAnyMethod());
 app.UseAuthentication();
 app.UseAuthorization();
 if (app.Environment.IsDevelopment())
