@@ -22,6 +22,7 @@ namespace WebApi.Services
         Task<PagedResult<TonghopmayxucVM>> GetAllPaging(GetManagerTonghopMayxucPagingRequest request);
         Task<PagedResult<TonghopmayxucVM>> GetQueryParametersPaging(QueryParameters request);
         Task<PagedResult<TonghopmayxucVM>> SearchAsync(SearchTongHopRequest request);
+        Task<PagedResult<TonghopmayxucVM>> QueryAsync(QueryParametersPage request);
         Task<List<int>> DeleteMutiple(List<int> ids);
 
     }
@@ -373,30 +374,83 @@ namespace WebApi.Services
             };
         }
 
+        public async Task<PagedResult<TonghopmayxucVM>> QueryAsync(QueryParametersPage request)
+        {
+            var query = from t in _thietbiDbContext.TongHopMayXucs.Include(x => x.MayXuc).Include(x => x.PhongBan).Include(x => x.LoaiThietBi)
+                        select t;
+
+            if (!string.IsNullOrWhiteSpace(request.Keyword))
+            {
+                query = query.Where(x =>
+                    x.MayXuc!.TenThietBi!.ToLower().Contains(request.Keyword.ToLower()) ||                  
+                    x.ViTriLapDat!.ToLower().Contains(request.Keyword.ToLower())||
+                    x.MaQuanLy!.ToLower().Contains(request.Keyword.ToLower()) ||
+                    x.PhongBan!.TenPhong!.ToLower().Contains(request.Keyword.ToLower())
+                    );
+
+            }
+            // ✅ Lọc theo trạng thái true / false
+          
+            var totalRecords = await query.CountAsync();
+            var items = await query
+        .OrderByDescending(x => x.NgayLap)
+        .Skip((request.PageIndex - 1) * request.PageSize)
+        .Take(request.PageSize)
+         .Select(x => new TonghopmayxucVM()
+
+
+         {
+             Id = x.Id,
+             MaQuanLy = x.MaQuanLy,
+             TenMayXuc = x.MayXuc!.TenThietBi,
+             MayxucId = x.MayXucId,
+             TenPhongBan = x.PhongBan!.TenPhong,
+             PhongBanId = x.PhongBanId,
+             LoaiThietBi = x.LoaiThietBi!.TenLoai,
+             LoaiThietBiId = x.LoaiThietBiId,
+             ViTriLapDat = x.ViTriLapDat,
+             NgayLap = x.NgayLap,
+             TinhTrang = x.TinhTrang,
+             SoLuong = x.SoLuong,
+             DuPhong = x.DuPhong,
+             GhiChu = x.GhiChu
+
+         })
+        .ToListAsync();
+            return new PagedResult<TonghopmayxucVM>
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                TotalRecords = totalRecords,
+                Items = items
+            };
+        }
+
         public async Task<PagedResult<TonghopmayxucVM>> GetQueryParametersPaging(QueryParameters request)
         {
            var query = from t in _thietbiDbContext.TongHopMayXucs
-                        .Include(x => x.MayXuc)
-                        .Include(x => x.PhongBan)
-                        .Include(x => x.LoaiThietBi)
+                        // .Include(x => x.MayXuc)
+                        // .Include(x => x.PhongBan)
+                        // .Include(x => x.LoaiThietBi)
                         select t;
 
             // Lọc theo duPhong (nếu có)
           if(!string.IsNullOrWhiteSpace(request.Keyword))
             {
                 query = query.Where(x =>
-                    x.MayXuc!.TenThietBi!.ToLower().Contains(request.Keyword.ToLower()) ||                  
-                    x.ViTriLapDat!.ToLower().Contains(request.Keyword.ToLower()) ||
-                    x.LoaiThietBi!.TenLoai!.ToLower().Contains(request.Keyword.ToLower()) ||
-                    x.MaQuanLy!.ToLower().Contains(request.Keyword.ToLower()) ||
-                    x.PhongBan!.TenPhong!.ToLower().Contains(request.Keyword.ToLower())                  
+                    x.MayXuc!.TenThietBi!.Contains(request.Keyword) ||                  
+                    x.ViTriLapDat!.Contains(request.Keyword) ||
+                    x.LoaiThietBi!.TenLoai!.Contains(request.Keyword) ||
+                    x.MaQuanLy!.Contains(request.Keyword) ||
+                    x.PhongBan!.TenPhong!.Contains(request.Keyword)                  
                     );
             }
            
 
             int totalRow = await query.CountAsync();
             int sumSoluong = await query.SumAsync(x => x.SoLuong);
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+            var data = await query.OrderBy(x => x.Id) 
+                .Skip((request.PageIndex - 1) * request.PageSize) 
                 .Take(request.PageSize)
                 .Select(x => new TonghopmayxucVM()
                 {

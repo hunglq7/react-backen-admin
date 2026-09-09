@@ -3,6 +3,7 @@
   "WorkspaceRootPath": "E:\\DU AN REACT ANTD\\Nodejs-SqlServer-React\\react-backen-admin\\",
   "Documents": [
     {
+<<<<<<< HEAD
       "AbsoluteMoniker": "D:0:0:{44FA1EAE-3620-4410-8A41-0F484750C186}|WebApi.csproj|e:\\du an react antd\\nodejs-sqlserver-react\\react-backen-admin\\services\\tonghopmayxucservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{44FA1EAE-3620-4410-8A41-0F484750C186}|WebApi.csproj|solutionrelative:services\\tonghopmayxucservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -57,6 +58,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{44FA1EAE-3620-4410-8A41-0F484750C186}|WebApi.csproj|e:\\du an react antd\\nodejs-sqlserver-react\\react-backen-admin\\controllers\\thietbicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{44FA1EAE-3620-4410-8A41-0F484750C186}|WebApi.csproj|solutionrelative:controllers\\thietbicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+=======
+      "AbsoluteMoniker": "D:0:0:{44FA1EAE-3620-4410-8A41-0F484750C186}|WebApi.csproj|e:\\du an react antd\\notjs-react-sqlserver-qltb\\react-backen-admin\\services\\tonghopmayxucservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{44FA1EAE-3620-4410-8A41-0F484750C186}|WebApi.csproj|solutionrelative:services\\tonghopmayxucservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+>>>>>>> eeed86d6e7a4585802d11dfb32b798caab865a74
     }
   ],
   "DocumentGroupContainers": [
@@ -76,6 +81,7 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "TonghopmayxucService.cs",
+<<<<<<< HEAD
               "DocumentMoniker": "E:\\DU AN REACT ANTD\\Nodejs-SqlServer-React\\react-backen-admin\\Services\\TonghopmayxucService.cs",
               "RelativeDocumentMoniker": "Services\\TonghopmayxucService.cs",
               "ToolTip": "E:\\DU AN REACT ANTD\\Nodejs-SqlServer-React\\react-backen-admin\\Services\\TonghopmayxucService.cs",
@@ -94,9 +100,17 @@
               "ToolTip": "E:\\DU AN REACT ANTD\\Nodejs-SqlServer-React\\react-backen-admin\\Program.cs",
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAACsAAAAAAAAAAAAAAIUAAAAAAAAAAAAAAA==",
+=======
+              "DocumentMoniker": "E:\\DU AN REACT ANTD\\Notjs-React-Sqlserver-QLTB\\react-backen-admin\\Services\\TonghopmayxucService.cs",
+              "RelativeDocumentMoniker": "Services\\TonghopmayxucService.cs",
+              "ToolTip": "E:\\DU AN REACT ANTD\\Notjs-React-Sqlserver-QLTB\\react-backen-admin\\Services\\TonghopmayxucService.cs",
+              "RelativeToolTip": "Services\\TonghopmayxucService.cs",
+              "ViewState": "AgIAAFkBAAAAAAAAAAAwwGUBAAAIAAAAAAAAAA==",
+>>>>>>> eeed86d6e7a4585802d11dfb32b798caab865a74
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-04T17:17:48.022Z",
+              "WhenOpened": "2026-09-07T15:16:57.787Z",
               "EditorCaption": ""
+<<<<<<< HEAD
             },
             {
               "$type": "Document",
@@ -241,6 +255,8 @@
               "ViewState": "AgIAADcAAAAAAAAAAAAcwFAAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-09-04T17:17:48.159Z"
+=======
+>>>>>>> eeed86d6e7a4585802d11dfb32b798caab865a74
             }
           ]
         }
