@@ -100,7 +100,7 @@ namespace WebApi.Controllers
             return Ok(new { deleted = result.Count });
         }
 
-        [HttpGet("search")]
+        [HttpGet("searchParametersPagination")]
         public async Task<IActionResult> Search([FromQuery] SearchTongHopRequest request)
         {
             var result = await _tonghopmaycaoService.SearchAsync(request);

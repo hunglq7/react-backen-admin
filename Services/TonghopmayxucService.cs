@@ -428,10 +428,7 @@ namespace WebApi.Services
 
         public async Task<PagedResult<TonghopmayxucVM>> GetQueryParametersPaging(QueryParameters request)
         {
-           var query = from t in _thietbiDbContext.TongHopMayXucs
-                        // .Include(x => x.MayXuc)
-                        // .Include(x => x.PhongBan)
-                        // .Include(x => x.LoaiThietBi)
+           var query = from t in _thietbiDbContext.TongHopMayXucs                       
                         select t;
 
             // Lọc theo duPhong (nếu có)

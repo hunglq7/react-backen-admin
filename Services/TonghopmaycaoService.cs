@@ -196,7 +196,7 @@ namespace WebApi.Services
 
         public async Task<PagedResult<TonghopmaycaoVm>> SearchAsync(SearchTongHopRequest request)
         {
-            var query = from t in _thietbiDbContext.TongHopMayCaos.Include(x => x.DanhmucMayCao).Include(x => x.PhongBan)
+            var query = from t in _thietbiDbContext.TongHopMayCaos
                         select t;
 
             if (!string.IsNullOrWhiteSpace(request.Keyword))
@@ -219,7 +219,8 @@ namespace WebApi.Services
             // 📅 Từ ngày
             if (request.TuNgay.HasValue)
             {
-                query = query.Where(x => x.NgayLap >= request.TuNgay.Value.Date);
+                var tuNgay = request.TuNgay.Value.Date.AddDays(1).AddTicks(-1);
+                query = query.Where(x => x.NgayLap >= tuNgay);
             }
 
             // 📅 Đến ngày (<= 23:59:59)
