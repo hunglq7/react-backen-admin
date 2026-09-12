@@ -17,7 +17,7 @@ namespace WebApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.18")
+                .HasAnnotation("ProductVersion", "10.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -112,6 +112,8 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("AppRoleClaims", (string)null);
                 });
 
@@ -134,24 +136,23 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("AppUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProviderKey")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -169,6 +170,8 @@ namespace WebApi.Migrations
 
                     b.HasKey("UserId", "RoleId");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("AppUserRoles", (string)null);
 
                     b.HasData(
@@ -182,15 +185,12 @@ namespace WebApi.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
@@ -208,25 +208,34 @@ namespace WebApi.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
+                            ConcurrencyStamp = "static-admin-role-concurrency-stamp",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -242,14 +251,19 @@ namespace WebApi.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Dob")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -270,10 +284,12 @@ namespace WebApi.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -291,18 +307,27 @@ namespace WebApi.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "548cd968-386b-4c22-b488-b96be9e7090c",
+                            ConcurrencyStamp = "static-admin-user-concurrency-stamp",
                             Dob = new DateTime(1979, 2, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "hunglq7@gmail.com",
                             EmailConfirmed = true,
@@ -312,9 +337,9 @@ namespace WebApi.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "hunglq7@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMfwwDxhUUz8MpWKqDXFk2OJ0I0+D7f/SmE1vA8xiR3WBKcAWifuaU4KMKKY5V6TOQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEASnD4B6vtzojn8VQQSRAc5WpLbaxBGhYIfoggNxDV9XJTb1LAHhfQPUBbNWc5mUgg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
+                            SecurityStamp = "static-admin-security-stamp",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -1337,6 +1362,38 @@ namespace WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PhongBan");
+                });
+
+            modelBuilder.Entity("WebApi.Data.Entites.Session", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RefreshToken")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Sessions", (string)null);
                 });
 
             modelBuilder.Entity("WebApi.Data.Entites.TheoDoiSuaChua", b =>
@@ -2731,10 +2788,61 @@ namespace WebApi.Migrations
                     b.HasOne("Api.Data.Entites.Danhmuctoitruc", "Danhmuctoitruc")
                         .WithMany("ThongsokythuatToitrucs")
                         .HasForeignKey("DanhmuctoitrucId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Danhmuctoitruc");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("WebApi.Data.Entites.AppRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.HasOne("WebApi.Data.Entites.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("WebApi.Data.Entites.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("WebApi.Data.Entites.AppRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebApi.Data.Entites.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("WebApi.Data.Entites.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebApi.Data.Entites.CapNhatGiaCot", b =>
@@ -2742,13 +2850,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("CapNhatGiaCots")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.DanhmucGiaCot", "DanhmucGiaCot")
                         .WithMany("CapNhatGiaCots")
                         .HasForeignKey("LoaiThietBiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucGiaCot");
@@ -2761,19 +2869,19 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DonViTinh", "DonViTinh")
                         .WithMany("ChiTietPhieuNhaps")
                         .HasForeignKey("DonViTinhId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhieuNhap", "PhieuNhap")
                         .WithMany("ChiTietPhieuNhaps")
                         .HasForeignKey("PhieuNhapId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.VatTu", "VatTu")
                         .WithMany("ChiTietPhieuNhaps")
                         .HasForeignKey("VatTuId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DonViTinh");
@@ -2788,19 +2896,19 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DonViTinh", "DonViTinh")
                         .WithMany("ChiTietPhieuXuats")
                         .HasForeignKey("DonViTinhId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhieuXuat", "PhieuXuat")
                         .WithMany("ChiTietPhieuXuats")
                         .HasForeignKey("PhieuXuatId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.VatTu", "VatTu")
                         .WithMany("ChiTietPhieuXuats")
                         .HasForeignKey("VatTuId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DonViTinh");
@@ -2814,12 +2922,13 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Data.Entites.ChucVu", "ChucVu")
                         .WithMany("NhanViens")
-                        .HasForeignKey("ChucVuId");
+                        .HasForeignKey("ChucVuId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("NhanViens")
                         .HasForeignKey("PhongBanId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ChucVu");
@@ -2832,7 +2941,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.NhanVien", "NhanVien")
                         .WithMany("NhanvienImages")
                         .HasForeignKey("NhanVienId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("NhanVien");
@@ -2843,7 +2952,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.TongHopBangTai", "TongHopBangTai")
                         .WithMany()
                         .HasForeignKey("TongHopBangTaiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("TongHopBangTai");
@@ -2854,7 +2963,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.TongHopBomNuoc", "TongHopBomNuoc")
                         .WithMany("NhatKyBomNuocs")
                         .HasForeignKey("TongHopBomNuocId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("TongHopBomNuoc");
@@ -2865,7 +2974,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.TongHopMayCao", "TongHopMayCao")
                         .WithMany("NhatKyMayCaos")
                         .HasForeignKey("TongHopMayCaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("TongHopMayCao");
@@ -2876,7 +2985,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.TonghopQuatgio", "TonghopQuatgio")
                         .WithMany("NhatKyQuatGios")
                         .HasForeignKey("TonghopquatgioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("TonghopQuatgio");
@@ -2887,13 +2996,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.TonghopCamera", "TonghopCamera")
                         .WithMany("NhatkyCameras")
                         .HasForeignKey("CameraId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("NhatkyCameras")
                         .HasForeignKey("DonViQuanLyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PhongBan");
@@ -2906,7 +3015,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.TongHopMayXuc", "TongHopMayXuc")
                         .WithMany("NhatkyMayxucs")
                         .HasForeignKey("TonghopmayxucId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("TongHopMayXuc");
@@ -2917,7 +3026,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.TongHopToiTruc", "TongHopToiTruc")
                         .WithMany("NhatkyTonghoptoitrucs")
                         .HasForeignKey("TonghoptoitrucId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("TongHopToiTruc");
@@ -2927,15 +3036,27 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Data.Entites.ThongsoAptomatKhoidongtu", null)
                         .WithMany("Nhatkyaptomatkhoidongtu")
-                        .HasForeignKey("ThongsoAptomatKhoidongtuId");
+                        .HasForeignKey("ThongsoAptomatKhoidongtuId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebApi.Data.Entites.TongHopAptomatKhoidongtu", "TongHopAptomatKhoidongtu")
                         .WithMany("Nhatkyaptomatkhoidongtus")
                         .HasForeignKey("TonghopaptomatkhoidongtuId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("TongHopAptomatKhoidongtu");
+                });
+
+            modelBuilder.Entity("WebApi.Data.Entites.Session", b =>
+                {
+                    b.HasOne("WebApi.Data.Entites.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WebApi.Data.Entites.TheoDoiSuaChua", b =>
@@ -2943,19 +3064,19 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.NhanVien", "NhanVien")
                         .WithMany("TheoDoiSuaChuas")
                         .HasForeignKey("NhanVienId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TheoDoiSuaChuas")
                         .HasForeignKey("PhongBanId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.TongHopThietBi", "TongHopThietBi")
                         .WithMany()
                         .HasForeignKey("TongHopThietBiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("NhanVien");
@@ -2970,7 +3091,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhmucBomnuoc", "DanhmucBomnuoc")
                         .WithMany("ThongSoBomNuocs")
                         .HasForeignKey("BomNuocId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucBomnuoc");
@@ -2981,7 +3102,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhMucBangTai", "DanhMucBangTai")
                         .WithMany("ThongSoKyThuatBangTais")
                         .HasForeignKey("BangTaiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhMucBangTai");
@@ -2992,7 +3113,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhmucBienap", "DanhmucBienap")
                         .WithMany("ThongSoKyThuatBienAp")
                         .HasForeignKey("BienApId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucBienap");
@@ -3003,12 +3124,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhmucMayCao", "DanhmucMayCao")
                         .WithMany("ThongSoKyThuatMayCaos")
                         .HasForeignKey("MayCaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.NhatKyMayCao", null)
                         .WithMany("ThongSoKyThuatMayCaos")
-                        .HasForeignKey("NhatKyMayCaoId");
+                        .HasForeignKey("NhatKyMayCaoId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("DanhmucMayCao");
                 });
@@ -3018,7 +3140,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhmucAptomatKhoidongtu", "DanhmucAptomatKhoidongtu")
                         .WithMany("ThongsoAptomatKhoidongtus")
                         .HasForeignKey("DanhmucaptomatKhoidongtuId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucAptomatKhoidongtu");
@@ -3029,7 +3151,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhmucNeo", "DanhmucNeo")
                         .WithMany("ThongSoNeos")
                         .HasForeignKey("NeoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucNeo");
@@ -3040,7 +3162,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhmucQuatgio", "DanhmucQuatgio")
                         .WithMany("ThongsoQuatgios")
                         .HasForeignKey("QuatgioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucQuatgio");
@@ -3051,7 +3173,7 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.MayXuc", "MayXuc")
                         .WithMany("ThongsokythuatMayxucs")
                         .HasForeignKey("MayXucId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("MayXuc");
@@ -3062,13 +3184,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopAptomatKhoidongtus")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.DanhmucAptomatKhoidongtu", "DanhmucAptomatKhoidongtu")
                         .WithMany("TongHopAptomatKhoidongtus")
                         .HasForeignKey("aptomatkhoidongtuId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucAptomatKhoidongtu");
@@ -3081,13 +3203,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhMucBangTai", "DanhMucBangTai")
                         .WithMany("TongHopBangTais")
                         .HasForeignKey("BangTaiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopBangTais")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhMucBangTai");
@@ -3100,13 +3222,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhmucBomnuoc", "DanhmucBomnuoc")
                         .WithMany("TongHopBomNuocs")
                         .HasForeignKey("BomNuocId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopBomNuocs")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucBomnuoc");
@@ -3119,13 +3241,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopKhoans")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.DanhMucKhoan", "DanhMucKhoan")
                         .WithMany("TongHopKhoans")
                         .HasForeignKey("KhoanId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhMucKhoan");
@@ -3138,13 +3260,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "DonVi")
                         .WithMany()
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.DanhmucKhoanBalang", "DanhmucKhoanBalang")
                         .WithMany("TongHopKhoanBalangs")
                         .HasForeignKey("KhoanBalangId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucKhoanBalang");
@@ -3157,13 +3279,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopMayCaos")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.DanhmucMayCao", "DanhmucMayCao")
                         .WithMany("TongHopMayCaos")
                         .HasForeignKey("MayCaoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucMayCao");
@@ -3176,19 +3298,19 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.LoaiThietBi", "LoaiThietBi")
                         .WithMany("TongHopMayXucs")
                         .HasForeignKey("LoaiThietBiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.MayXuc", "MayXuc")
                         .WithMany("TongHopMayXucs")
                         .HasForeignKey("MayXucId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopMayXucs")
                         .HasForeignKey("PhongBanId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("LoaiThietBi");
@@ -3203,13 +3325,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopNeos")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.DanhmucNeo", "DanhmucNeo")
                         .WithMany("TongHopNeos")
                         .HasForeignKey("NeoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucNeo");
@@ -3222,13 +3344,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopRoles")
                         .HasForeignKey("PhongBanId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.DanhMucRole", "DanhmucRole")
                         .WithMany("TongHopRoles")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucRole");
@@ -3241,25 +3363,25 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DonViTinh", "DonViTinh")
                         .WithMany("TongHopThietBis")
                         .HasForeignKey("DonViTinhId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.LoaiThietBi", "LoaiThietBi")
                         .WithMany("TongHopThietBis")
                         .HasForeignKey("LoaiThietBiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.NhanVien", "NhanVien")
                         .WithMany("TongHopThietBis")
                         .HasForeignKey("NhanVienId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopThietBis")
                         .HasForeignKey("PhongBanId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DonViTinh");
@@ -3276,18 +3398,19 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TongHopToiTrucs")
                         .HasForeignKey("DonViSuDungId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Api.Data.Entites.Danhmuctoitruc", "Danhmuctoitruc")
                         .WithMany()
                         .HasForeignKey("ThietbiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.ToiTruc", null)
                         .WithMany("TongHopToiTrucs")
-                        .HasForeignKey("ToiTrucId");
+                        .HasForeignKey("ToiTrucId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Danhmuctoitruc");
 
@@ -3299,13 +3422,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhmucBaLang", "DanhmucBaLang")
                         .WithMany("TonghopBalangs")
                         .HasForeignKey("BaLangId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TonghopBalangs")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucBaLang");
@@ -3318,13 +3441,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.DanhmucBienap", "DanhmucBienap")
                         .WithMany()
                         .HasForeignKey("BienapId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany()
                         .HasForeignKey("PhongbanId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucBienap");
@@ -3337,25 +3460,25 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TonghopCameras")
                         .HasForeignKey("DonViQuanLyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.DonViTinh", "DonViTinh")
                         .WithMany("TonghopCameras")
                         .HasForeignKey("DonViTinhId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.LoaiThietBi", "LoaiThietBi")
                         .WithMany("TonghopCameras")
                         .HasForeignKey("LoaiThietBiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.Camera", "Camera")
                         .WithMany("TonghopCameras")
                         .HasForeignKey("TenThietBiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Camera");
@@ -3372,13 +3495,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("TonghopQuatgio")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.DanhmucQuatgio", "DanhmucQuatgio")
                         .WithMany("TonghopQuatgios")
                         .HasForeignKey("QuatGioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DanhmucQuatgio");
@@ -3391,13 +3514,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.Capdien", "Capdien")
                         .WithMany("Tonghopcapdiens")
                         .HasForeignKey("CapdienId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("Tonghopcapdiens")
                         .HasForeignKey("DonviId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Capdien");
@@ -3410,13 +3533,13 @@ namespace WebApi.Migrations
                     b.HasOne("WebApi.Data.Entites.PhongBan", "PhongBan")
                         .WithMany("Tonghopgiacotthuylucs")
                         .HasForeignKey("DonViId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.Danhmucgiacotthuyluc", "Danhmucgiacotthuyluc")
                         .WithMany("Tonghopgiacotthuylucs")
                         .HasForeignKey("ThietBiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Danhmucgiacotthuyluc");
@@ -3428,17 +3551,19 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Data.Entites.PhongBan", "DonVi")
                         .WithMany("XuatNhapVatTus")
-                        .HasForeignKey("DonViId");
+                        .HasForeignKey("DonViId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebApi.Data.Entites.ThietBi", "ThietBi")
                         .WithMany("XuatNhapVatTus")
                         .HasForeignKey("ThietBiId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApi.Data.Entites.ViTri", "ViTri")
                         .WithMany("XuatNhapVatTus")
-                        .HasForeignKey("ViTriId");
+                        .HasForeignKey("ViTriId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("DonVi");
 

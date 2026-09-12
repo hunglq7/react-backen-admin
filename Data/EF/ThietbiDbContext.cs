@@ -12,9 +12,21 @@ namespace WebApi.Data.EF
     {
         public ThietbiDbContext(DbContextOptions options) : base(options) { }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+                         .SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
 
             modelBuilder.Entity<AppUser>().ToTable("Users");
             modelBuilder.Entity<AppRole>().ToTable("Roles");
@@ -24,9 +36,15 @@ namespace WebApi.Data.EF
 
             modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaims");
             modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x => x.UserId);
+            modelBuilder.Entity<Session>().ToTable("Sessions");
+            modelBuilder.Entity<Session>().Ignore(x => x.IsActive);
+            modelBuilder.Entity<Session>().Property(x => x.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Session>().HasIndex(x => x.UserId);
+            modelBuilder.Entity<Session>().HasIndex(x => x.RefreshToken).IsUnique();
             //Data seeding
             modelBuilder.Seed();
         }
+        public DbSet<Session> Sessions { get; set; }
         public DbSet<PhongBan> PhongBans { get; set; }
         public DbSet<ChucVu> ChucVus { get; set; }
         public DbSet<DonViTinh> DonViTinhs { get; set; }

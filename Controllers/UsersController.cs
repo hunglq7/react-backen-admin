@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Data.Entites;
+using WebApi.Models.Common;
 using WebApi.Models.User;
 using WebApi.Services;
 
@@ -30,7 +31,7 @@ namespace WebApi.Controllers
                 if (result == null)
                     return BadRequest("Result is null");
 
-                if (string.IsNullOrEmpty(result.ResultObj))
+                if (result.ResultObj == null)
                     return BadRequest(result);
 
                 return Ok(result);
@@ -42,9 +43,34 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout()
+        [AllowAnonymous]
+        public async Task<IActionResult> Logout([FromBody] RefreshTokenRequest request)
         {
-            return Ok();
+            var result = await _userService.RevokeRefreshToken(request.RefreshToken);
+            if (!result.IsSuccessed)
+            {
+                return Unauthorized(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost("refresh-token")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.RefreshToken))
+            {
+                return BadRequest(new ApiErrorResult<object>("Refresh token không hợp lệ"));
+            }
+
+            var result = await _userService.RefreshToken(request.RefreshToken);
+            if (!result.IsSuccessed)
+            {
+                return Unauthorized(result);
+            }
+
+            return Ok(result);
         }
 
         [HttpPost]

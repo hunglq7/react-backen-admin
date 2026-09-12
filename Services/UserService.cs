@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using WebApi.Data.EF;
 using WebApi.Data.Entites;
@@ -14,7 +15,9 @@ namespace WebApi.Services
 
     public interface IUserService
     {
-        Task<ApiResult<string>> Authencate(LoginRequest request);
+        Task<ApiResult<AuthTokenResponse>> Authencate(LoginRequest request);
+        Task<ApiResult<AuthTokenResponse>> RefreshToken(string refreshToken);
+        Task<ApiResult<bool>> RevokeRefreshToken(string refreshToken);
 
         Task<ApiResult<bool>> Register(RegisterRequest request);
 
@@ -52,37 +55,205 @@ namespace WebApi.Services
             _dbContext = dbContext;
             _config = config;
         }
-        public async Task<ApiResult<string>> Authencate(LoginRequest request)
+        public async Task<ApiResult<AuthTokenResponse>> Authencate(LoginRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
-            if (user == null) return new ApiErrorResult<string>("Email không tồn tại");
+            if (user == null)
+            {
+                return new ApiErrorResult<AuthTokenResponse>("Email không tồn tại");
+            }
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, true, true);
             if (!result.Succeeded)
             {
-                return new ApiErrorResult<string>("Tên Đăng nhập hoặc mật khẩu không đúng");
+                return new ApiErrorResult<AuthTokenResponse>("Tên Đăng nhập hoặc mật khẩu không đúng");
             }
-            var roles = await _userManager.GetRolesAsync(user);
+
+            var accessToken = GenerateJwtToken(user, GetAccessTokenMinutes());
+            var refreshToken = GenerateRefreshToken(user, GetRefreshTokenDays());
+            var expiresAt = DateTime.UtcNow.AddDays(GetRefreshTokenDays());
+
+            var session = new Session
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                RefreshToken = refreshToken,
+                ExpiresAt = expiresAt,
+                CreatedAt = DateTime.UtcNow,
+                RevokedAt = null
+            };
+
+            var existingSession = await _dbContext.Sessions.FirstOrDefaultAsync(x => x.UserId == user.Id && x.RevokedAt == null);
+            if (existingSession != null)
+            {
+                existingSession.RevokedAt = DateTime.UtcNow;
+            }
+
+            _dbContext.Sessions.Add(session);
+            await _dbContext.SaveChangesAsync();
+
+            var response = new AuthTokenResponse
+            {
+                UserId = user.Id,
+                AccessToken = accessToken,
+                RefreshToken = refreshToken
+            };
+
+            return new ApiSuccessResult<AuthTokenResponse>(response);
+        }
+
+        public async Task<ApiResult<AuthTokenResponse>> RefreshToken(string refreshToken)
+        {
+            if (string.IsNullOrWhiteSpace(refreshToken))
+            {
+                return new ApiErrorResult<AuthTokenResponse>("Refresh token không hợp lệ");
+            }
+
+            var principal = GetPrincipalFromExpiredToken(refreshToken);
+            if (principal == null)
+            {
+                return new ApiErrorResult<AuthTokenResponse>("Refresh token không hợp lệ");
+            }
+
+            var tokenType = principal.FindFirstValue("type");
+            if (!string.Equals(tokenType, "refresh", StringComparison.OrdinalIgnoreCase))
+            {
+                return new ApiErrorResult<AuthTokenResponse>("Refresh token không hợp lệ");
+            }
+
+            var userIdClaim = principal.FindFirstValue(ClaimTypes.NameIdentifier) ?? principal.FindFirstValue(JwtRegisteredClaimNames.Sub);
+            if (!Guid.TryParse(userIdClaim, out var userId))
+            {
+                return new ApiErrorResult<AuthTokenResponse>("Refresh token không hợp lệ");
+            }
+
+            var session = await _dbContext.Sessions
+                .FirstOrDefaultAsync(x => x.UserId == userId && x.RefreshToken == refreshToken && x.RevokedAt == null && x.ExpiresAt > DateTime.UtcNow);
+
+            if (session == null)
+            {
+                return new ApiErrorResult<AuthTokenResponse>("Refresh token đã hết hạn hoặc đã bị thu hồi");
+            }
+
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                return new ApiErrorResult<AuthTokenResponse>("User không tồn tại");
+            }
+
+            var newAccessToken = GenerateJwtToken(user, GetAccessTokenMinutes());
+            var newRefreshToken = GenerateRefreshToken(user, GetRefreshTokenDays());
+            var newExpiresAt = DateTime.UtcNow.AddDays(GetRefreshTokenDays());
+
+            session.RefreshToken = newRefreshToken;
+            session.ExpiresAt = newExpiresAt;
+            session.CreatedAt = DateTime.UtcNow;
+            session.RevokedAt = null;
+
+            await _dbContext.SaveChangesAsync();
+
+            return new ApiSuccessResult<AuthTokenResponse>(new AuthTokenResponse
+            {
+                UserId = user.Id,
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken
+            });
+        }
+
+        public async Task<ApiResult<bool>> RevokeRefreshToken(string refreshToken)
+        {
+            if (string.IsNullOrWhiteSpace(refreshToken))
+            {
+                return new ApiErrorResult<bool>("Refresh token không hợp lệ");
+            }
+
+            var session = await _dbContext.Sessions.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
+            if (session == null)
+            {
+                return new ApiErrorResult<bool>("Refresh token không tồn tại");
+            }
+
+            session.RevokedAt = DateTime.UtcNow;
+            await _dbContext.SaveChangesAsync();
+            return new ApiSuccessResult<bool>(true);
+        }
+
+        private string GenerateJwtToken(AppUser user, int expiresInMinutes)
+        {
+            var roles = _userManager.GetRolesAsync(user).GetAwaiter().GetResult();
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim("mail",user.Email!),
-                new Claim("name",user.FirstName!),
-                new Claim("role", string.Join(",",roles)),
-                //new Claim(ClaimTypes.Name, user.FullName!),
-                new Claim("fullName", user.FullName!)
+                new Claim("mail", user.Email ?? string.Empty),
+                new Claim("name", user.FirstName ?? string.Empty),
+                new Claim("role", string.Join(",", roles)),
+                new Claim("fullName", user.FullName ?? string.Empty)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTSetting:SecurityKey"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(_config["JWTSetting:ValiAudience"],
+            var token = new JwtSecurityToken(
+                _config["JWTSetting:ValiIssuer"],
                 _config["JWTSetting:ValiAudience"],
                 claims,
-                expires: DateTime.Now.AddHours(3),
+                expires: DateTime.UtcNow.AddMinutes(expiresInMinutes),
                 signingCredentials: creds);
 
-            return new ApiSuccessResult<string>(new JwtSecurityTokenHandler().WriteToken(token));
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private string GenerateRefreshToken(AppUser user, int expiresInDays)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim("type", "refresh")
+            };
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTSetting:SecurityKey"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                _config["JWTSetting:ValiIssuer"],
+                _config["JWTSetting:ValiAudience"],
+                claims,
+                expires: DateTime.UtcNow.AddDays(expiresInDays),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private int GetAccessTokenMinutes() => int.TryParse(_config["JWTSetting:AccessTokenMinutes"], out var value) ? value : 15;
+        private int GetRefreshTokenDays() => int.TryParse(_config["JWTSetting:RefreshTokenDays"], out var value) ? value : 7;
+
+        private ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = false,
+                ValidAudience = _config["JWTSetting:ValiAudience"],
+                ValidIssuer = _config["JWTSetting:ValiIssuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTSetting:SecurityKey"]!))
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
+                if (securityToken is not JwtSecurityToken jwtSecurityToken ||
+                    !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return null;
+                }
+
+                return principal;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<ApiResult<bool>> Delete(Guid id)

@@ -11,7 +11,5 @@ namespace WebApi.Data.Entites
         public string? Avatar { get; set; }
 
         public DateTime Dob { get; set; }
-
-       
     }
 }
