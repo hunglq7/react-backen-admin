@@ -57,7 +57,16 @@ namespace WebApi.Services
         }
         public async Task<ApiResult<AuthTokenResponse>> Authencate(LoginRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var users = await _dbContext.Users
+                .Where(x => x.Email == request.Email)
+                .ToListAsync();
+
+            if (users.Count > 1)
+            {
+                return new ApiErrorResult<AuthTokenResponse>("Email đang bị trùng trong hệ thống");
+            }
+
+            var user = users.SingleOrDefault();
             if (user == null)
             {
                 return new ApiErrorResult<AuthTokenResponse>("Email không tồn tại");
