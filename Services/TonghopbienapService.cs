@@ -17,6 +17,7 @@ namespace WebApi.Services
         Task<TonghopBienap> Update([FromBody] TonghopBienap Request);
         Task<bool> Delete(int id);
         Task<ApiResult<int>> DeleteSelect(List<int> ids);
+        Task<ApiResult<int>> totalTonghopbienap();
     }
     public class TonghopbienapService : ITonghopbienapService
     {
@@ -88,35 +89,6 @@ namespace WebApi.Services
             return new ApiSuccessResult<int>(count);
         }
 
-        // public async Task<List<TonghopbienapVm>> GetAll()
-        // {
-        //     try
-        //     {
-        //         var result = await _thietbiDb.TonghopBienaps
-        //             .Include(x => x.DanhmucBienap)
-        //             .Include(x => x.PhongBan)
-        //             .AsNoTracking()
-        //             .Select(x => new TonghopbienapVm()
-        //             {
-        //                 Id = x.Id,
-        //                 TenThietBi = x.DanhmucBienap != null ? x.DanhmucBienap.TenThietBi : "Không xác định",
-        //                 BienapId = x.BienapId,
-        //                 TenPhongBan = x.PhongBan != null ? x.PhongBan.TenPhong : "Không xác định",
-        //                 PhongbanId = x.PhongbanId,
-        //                 ViTriLapDat = x.ViTriLapDat ?? "",
-        //                 NgayLap = x.NgayLap,
-        //                 DuPhong = x.DuPhong,
-        //                 GhiChu = x.GhiChu ?? ""
-        //             })
-        //             .ToListAsync();
-
-        //         return result;
-        //     }
-        //     catch (Exception)
-        //     {
-        //         throw new Exception($"GetAll error: {ex.Message}", ex);
-        //     }
-        // }
 
         public async Task<List<TonghopbienapVm>> GetAll()
         {

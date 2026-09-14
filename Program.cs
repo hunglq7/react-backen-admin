@@ -96,15 +96,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
-//var myOrigins = "_myOrigins";
-//builder.Services.AddCors(options => options.AddPolicy(name: myOrigins,
-//    policy =>
-//    {
-//        policy.WithOrigins("http://localhost:5252").AllowAnyMethod().AllowAnyHeader();
-//    }
-//    ));
-// Configure the HTTP request pipeline.
-//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseStaticFiles(new StaticFileOptions()
 {

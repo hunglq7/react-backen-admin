@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Data.Entites;
 using WebApi.Services;
@@ -14,6 +15,7 @@ namespace WebApi.Controllers
         {
             _danhmucMayCaoService = danhmucMayCaoService;
         }
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
@@ -23,6 +25,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("UpdateMultiple")]
+        [Authorize]
         public async Task<IActionResult> UpdateMuliple([FromBody] List<DanhmucMayCao> reponse)
         {
 
@@ -35,6 +38,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("DeleteMultipale")]
+        [Authorize]
 
         public async Task<IActionResult> DeleteMultiple([FromBody] List<int> ids)
         {
@@ -47,6 +51,7 @@ namespace WebApi.Controllers
 
         }
         [HttpPost("Add")]
+        [Authorize]
         public async Task<ActionResult> Add([FromBody] DanhmucMayCao request)
         {
             if (request == null)
@@ -58,6 +63,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("update")]
+        [Authorize]
         public async Task<ActionResult> Update([FromBody] DanhmucMayCao request)
         {
             if (!ModelState.IsValid)
@@ -68,6 +74,7 @@ namespace WebApi.Controllers
             return Ok();
         }
         [HttpDelete("{Id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteById(int Id)
         {
             var items = await _danhmucMayCaoService.Delete(Id);

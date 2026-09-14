@@ -26,7 +26,7 @@ namespace WebApi.Controllers
 
                 if (request == null)
                 {
-                    return BadRequest(new { message = "Request không du?c r?ng", success = false });
+                    return BadRequest(new { message = "Request khï¿½ng du?c r?ng", success = false });
                 }
                 if (!ModelState.IsValid)
                 {
@@ -58,7 +58,7 @@ namespace WebApi.Controllers
             try
             {
                 if (request == null)
-                    return BadRequest(new { message = "Request không h?p l?", success = false });
+                    return BadRequest(new { message = "Request khï¿½ng h?p l?", success = false });
 
                 if (!ModelState.IsValid)
                 {
@@ -104,15 +104,15 @@ namespace WebApi.Controllers
 
                 if (id == 0)
                 {
-                    return BadRequest(new { message = "ID không h?p l?", success = false });
+                    return BadRequest(new { message = "ID khï¿½ng h?p l?", success = false });
                 }
                 var deleted = await _service.Delete(id);
                 if (!deleted)
                 {
-                    return NotFound(new { message = "Không tìm th?y b?n ghi", success = false });
+                    return NotFound(new { message = "Khï¿½ng tï¿½m th?y b?n ghi", success = false });
                 }
                 _logger.LogInformation($"Delete successful for ID: {id}");
-                return Ok(new { message = "Xóa thành công", success = true });
+                return Ok(new { message = "Xï¿½a thï¿½nh cï¿½ng", success = true });
             }
             catch (Exception ex)
             {
@@ -124,6 +124,16 @@ namespace WebApi.Controllers
         public async Task<IActionResult> DeleteSelect([FromBody] List<int> ids)
         {
             var result = await _service.DeleteSelect(ids);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(new { message = result.Message, success = false });
+            }
+            return Ok(new { data = result.ResultObj, success = true });
+        }
+        [HttpGet("total")]
+        public async Task<IActionResult> TotalTonghopbienap()
+        {
+            var result = await _service.totalTonghopbienap();
             if (!result.IsSuccessed)
             {
                 return BadRequest(new { message = result.Message, success = false });
