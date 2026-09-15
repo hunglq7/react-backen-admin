@@ -512,3 +512,4 @@ E:\DU AN REACT ANTD\Notjs-React-Sqlserver-QLTB\react-backen-admin\obj\authorize-
 E:\DU AN REACT ANTD\Notjs-React-Sqlserver-QLTB\react-backen-admin\obj\authorize-check\runtimes\win-arm64\native\msalruntime_arm64.dll
 E:\DU AN REACT ANTD\Notjs-React-Sqlserver-QLTB\react-backen-admin\obj\authorize-check\runtimes\win-x64\native\msalruntime.dll
 E:\DU AN REACT ANTD\Notjs-React-Sqlserver-QLTB\react-backen-admin\obj\authorize-check\runtimes\win-x86\native\msalruntime_x86.dll
+E:\DU AN REACT ANTD\Nodejs-SqlServer-React\react-backen-admin\obj\Debug\net10.0-windows\WebApi.sourcelink.json
