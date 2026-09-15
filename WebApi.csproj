@@ -1,0 +1,341 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- suppress common nullable and other warnings that occur throughout the generated code and migrations -->
+    <NoWarn>CS8602;CS8601;CS8618;CS8625;CS8981;CS0105;CS0472</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="8.7.0" />
+    <PackageReference Include="ExcelDataReader" Version="3.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images\FILES\MayTinh.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10138.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10143.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10156.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10159.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10168.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10252.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10257.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10258.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10265.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10266.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10334.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10342.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10348.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10391.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10399.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10413.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10415.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10416.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10462.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10463.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10601.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10602.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10608.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10647.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10660.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10685.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10743.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10745.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10806.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10882.jpg" />
+    <None Include="wwwroot\Images\NhanVien\10916.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11020.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11093.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11097.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11102.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11266.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11305.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11476.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11477.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11478.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11508.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11549.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11610.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11689.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11690.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11931.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11933.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11934.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11935.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11936.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11942.jpg" />
+    <None Include="wwwroot\Images\NhanVien\11990.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12014.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12021.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12056.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12193.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12194.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12239.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12279.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12289.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12311.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12346.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12347.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12397.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12425.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12591.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12655.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12656.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12707.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12708.jpg" />
+    <None Include="wwwroot\Images\NhanVien\12709.jpg" />
+    <None Include="wwwroot\Images\NhanVien\13251.jpg" />
+    <None Include="wwwroot\Images\NhanVien\13609.jpg" />
+    <None Include="wwwroot\Images\NhanVien\13662.jpg" />
+    <None Include="wwwroot\Images\NhanVien\13860.jpg" />
+    <None Include="wwwroot\Images\NhanVien\13863.jpg" />
+    <None Include="wwwroot\Images\NhanVien\13864.jpg" />
+    <None Include="wwwroot\Images\NhanVien\13880.jpg" />
+    <None Include="wwwroot\Images\NhanVien\13928.jpg" />
+    <None Include="wwwroot\Images\NhanVien\13929.jpg" />
+    <None Include="wwwroot\Images\NhanVien\14133.jpg" />
+    <None Include="wwwroot\Images\NhanVien\14168.jpg" />
+    <None Include="wwwroot\Images\NhanVien\14228.jpg" />
+    <None Include="wwwroot\Images\NhanVien\14521.jpg" />
+    <None Include="wwwroot\Images\NhanVien\1930.jpg" />
+    <None Include="wwwroot\Images\NhanVien\3739.jpg" />
+    <None Include="wwwroot\Images\NhanVien\4004.jpg" />
+    <None Include="wwwroot\Images\NhanVien\4119.jpg" />
+    <None Include="wwwroot\Images\NhanVien\4252.jpg" />
+    <None Include="wwwroot\Images\NhanVien\4515.jpg" />
+    <None Include="wwwroot\Images\NhanVien\4517.jpg" />
+    <None Include="wwwroot\Images\NhanVien\4697.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5023.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5168.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5246.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5255.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5320.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5323.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5324.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5426.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5663.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5787.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5797.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5917.jpg" />
+    <None Include="wwwroot\Images\NhanVien\5941.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6020.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6042.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6096.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6236.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6275.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6280.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6290.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6296.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6370.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6402.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6419.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6421.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6457.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6460.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6466.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6474.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6489.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6532.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6548.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6553.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6555.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6558.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6559.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6571.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6581.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6592.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6604.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6627.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6628.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6647.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6648.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6652.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6653.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6656.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6679.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6689.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6717.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6720.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6724.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6725.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6745.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6746.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6754.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6806.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6832.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6839.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6840.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6841.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6844.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6845.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6846.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6847.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6850.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6854.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6874.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6914.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6915.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6918.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6930.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6980.jpg" />
+    <None Include="wwwroot\Images\NhanVien\6991.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7003.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7005.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7084.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7111.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7116.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7192.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7193.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7220.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7224.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7269.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7318.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7335.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7340.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7366.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7394.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7629.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7630.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7631.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7634.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7647.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7681.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7699.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7701.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7839.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7938.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7949.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7957.jpg" />
+    <None Include="wwwroot\Images\NhanVien\7963.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8010.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8014.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8109.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8111.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8219.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8244.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8266.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8292.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8298.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8300.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8311.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8320.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8368.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8372.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8421.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8428.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8451.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8666.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8668.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8673.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8680.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8684.png" />
+    <None Include="wwwroot\Images\NhanVien\8699.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8781.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8786.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8788.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8817.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8838.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8849.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8864.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8882.jpg" />
+    <None Include="wwwroot\Images\NhanVien\8969.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9068.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9088.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9650.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9687.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9764.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9766.png" />
+    <None Include="wwwroot\Images\NhanVien\9767.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9777.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9781.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9787.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9789.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9791.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9893.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9895.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9897.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9962.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9980.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9982.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9983.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9984.jpg" />
+    <None Include="wwwroot\Images\NhanVien\9986.jpg" />
+    <None Include="wwwroot\Images\NhanVien\Canon 3500.jpg" />
+    <None Include="wwwroot\Images\NhanVien\canon3100.jpg" />
+    <None Include="wwwroot\Images\NhanVien\img.jpg" />
+    <None Include="wwwroot\Images\NhanVien\no-photo.png" />
+    <None Include="wwwroot\Images\NhanVien\Screenshot_20221209_063622.png" />
+    <None Include="wwwroot\Images\NhanVien\Screenshot_20221209_065618.png" />
+    <None Include="wwwroot\Images\ThietBi\canon 251dw.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Canon 3500.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Canon 8780X.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Canon MF4700.jpg" />
+    <None Include="wwwroot\Images\ThietBi\canon2900.png" />
+    <None Include="wwwroot\Images\ThietBi\canon3100.jpg" />
+    <None Include="wwwroot\Images\ThietBi\canon3500.jpg" />
+    <None Include="wwwroot\Images\ThietBi\canon8780x.jpg" />
+    <None Include="wwwroot\Images\ThietBi\computer.jpg" />
+    <None Include="wwwroot\Images\ThietBi\EpSon770.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP 426fdn.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP 501DN .jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP M139 F MFP.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP M227.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP M601n.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP P1005.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP P2015.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP Pro 400%281%29.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP Pro 400.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP T1200.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP T2600s.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP-401D.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP-PRO-400.jpg" />
+    <None Include="wwwroot\Images\ThietBi\hp1006.jpg" />
+    <None Include="wwwroot\Images\ThietBi\hp1020.jpg" />
+    <None Include="wwwroot\Images\ThietBi\hp501.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP501DN.jpg" />
+    <None Include="wwwroot\Images\ThietBi\hp5100.jpg" />
+    <None Include="wwwroot\Images\ThietBi\HP5200.jpg" />
+    <None Include="wwwroot\Images\ThietBi\hp706n.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Hp776.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Kyocera TASKalfa 3212i%281%29.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Kyocera TASKalfa 3212i.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Laptop HP Envy 13T.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Laptop-Dell-5559.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Laptop-Dell-Vostro-3490.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Maychu_Dell.jpg" />
+    <None Include="wwwroot\Images\ThietBi\MayTinh.jpg" />
+    <None Include="wwwroot\Images\ThietBi\MF220D.jpg" />
+    <None Include="wwwroot\Images\ThietBi\no-photo.png" />
+    <None Include="wwwroot\Images\ThietBi\Panasonic KV-SL3066.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Panasonic MB2025.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Print Data Card SP25.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Ricoh 6700.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Ricoh W2400.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Ricoh6700.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Screenshot_20221209_063622.png" />
+    <None Include="wwwroot\Images\ThietBi\server-chiase.jpg" />
+    <None Include="wwwroot\Images\ThietBi\Surface-Pro-7.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\" />
+    <Folder Include="wwwroot\Reports\Quatgio\" />
+  </ItemGroup>
+
+</Project>
