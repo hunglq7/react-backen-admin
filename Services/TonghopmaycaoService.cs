@@ -19,6 +19,7 @@ namespace WebApi.Services
         Task<PagedResult<TonghopmaycaoVm>> SearchAsync(SearchTongHopRequest request);
         Task<List<TonghopmaycaoVm>> GetMaycao();
         Task<List<int>> DeleteMutiple(List<int> ids);
+
     }
 
     public class TonghopmaycaoService : ITonghopmaycaoService

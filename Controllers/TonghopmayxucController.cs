@@ -53,8 +53,7 @@ namespace WebApi.Controllers
             var mayxuc = await _tonghopmayxucService.getDatailById(Id);
             return Ok(mayxuc);
         }
-        [HttpGet("sumTonghopmayxuc")]
-
+        [HttpGet("count")]
         public async Task<ActionResult> SumTonghopmayxuc()
         {
             var query = await _tonghopmayxucService.SumTonghopmayxuc();
@@ -91,7 +90,7 @@ namespace WebApi.Controllers
 
         }
 
-         [HttpGet("QueryParametersPaging")]
+        [HttpGet("QueryParametersPaging")]
         public async Task<IActionResult> QueryParametersPaging([FromQuery] QueryParameters request)
         {
             var query = await _tonghopmayxucService.GetQueryParametersPaging(request);

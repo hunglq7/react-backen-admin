@@ -42,8 +42,7 @@ namespace WebApi.Controllers
             var entity = await _tonghopmaycaoService.GetDetailById(Id);
             return Ok(entity);
         }
-        [HttpGet("sum")]
-
+        [HttpGet("count")]
         public async Task<ActionResult> Sum()
         {
             var query = await _tonghopmaycaoService.Sum();

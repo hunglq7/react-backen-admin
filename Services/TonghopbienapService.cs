@@ -146,16 +146,6 @@ namespace WebApi.Services
             return result;
         }
 
-        public async Task<ApiResult<int>> totalTonghopbienap()
-        {
-           var total= await _thietbiDb.TonghopBienaps.CountAsync();
-            return new ApiResult<int>
-            {
-                IsSuccessed = true, // Hoặc IsSuccess tùy bạn đặt tên
-                ResultObj = total   // Hoặc Data = total
-            };
-        }
-
         public async Task<TonghopBienap> Update([FromBody] TonghopBienap Request)
         {
             if (Request == null)
@@ -184,6 +174,19 @@ namespace WebApi.Services
             _thietbiDb.Update(entity);
             await _thietbiDb.SaveChangesAsync();
             return entity;
+        }
+
+        public async Task<ApiResult<int>> totalTonghopbienap()
+        {
+            try
+            {
+                var count = await _thietbiDb.TonghopBienaps.CountAsync();
+                return new ApiSuccessResult<int>(count);
+            }
+            catch (Exception ex)
+            {
+                return new ApiErrorResult<int>($"Lỗi khi đếm tổng số bản ghi: {ex.Message}");
+            }
         }
     }
 }
